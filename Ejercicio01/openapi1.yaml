@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: API de Administración de Biblioteca
+  version: 1.0.0
+  description: API RESTful para la gestión de libros en una biblioteca.
+paths:
+  /libros:
+    post:
+      summary: Registrar un nuevo libro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Libro'
+      responses:
+        '201':
+          description: Libro creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+    get:
+      summary: Consultar todos los libros
+      responses:
+        '200':
+          description: Lista de libros encontrada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Libro'
+  /libros/buscar:
+    get:
+      summary: Consultar libros por título
+      parameters:
+        - name: titulo
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Búsqueda realizada con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Libro'
+  /libros/{id}:
+    put:
+      summary: Actualizar un libro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Libro'
+      responses:
+        '200':
+          description: Libro actualizado correctamente
+        '404':
+          description: Libro no encontrado
+    delete:
+      summary: Eliminar un libro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Libro eliminado exitosamente
+        '404':
+          description: Libro no encontrado
+components:
+  schemas:
+    Libro:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        titulo:
+          type: string
+          example: "Cien años de soledad"
+        autor:
+          type: string
+          example: "Gabriel García Márquez"
+        isbn:
+          type: string
+          example: "978-0307474728"
+        anioPublicacion:
+          type: integer
+          example: 1967
+        estado:
+          type: string
+          example: "DISPONIBLE"

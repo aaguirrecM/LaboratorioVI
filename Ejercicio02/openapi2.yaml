@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: API de Cursos Universitarios
+  version: 1.0.0
+  description: API RESTful para administrar los cursos de la universidad.
+paths:
+  /cursos:
+    post:
+      summary: Crear un nuevo curso
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Curso'
+      responses:
+        '201':
+          description: Curso creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curso'
+    get:
+      summary: Consultar todos los cursos
+      responses:
+        '200':
+          description: Lista de cursos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Curso'
+  /cursos/codigo/{codigo}:
+    get:
+      summary: Consultar curso por código
+      parameters:
+        - name: codigo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Curso encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curso'
+        '404':
+          description: Curso no encontrado
+  /cursos/{id}:
+    put:
+      summary: Actualizar un curso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Curso'
+      responses:
+        '200':
+          description: Curso actualizado exitosamente
+        '404':
+          description: Curso no encontrado
+    delete:
+      summary: Eliminar un curso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Curso eliminado correctamente
+        '404':
+          description: Curso no encontrado
+components:
+  schemas:
+    Curso:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: "Algoritmos y Estructuras de Datos"
+        codigo:
+          type: string
+          example: "CS101"
+        creditos:
+          type: integer
+          example: 4
+        estado:
+          type: string
+          example: "ACTIVO"

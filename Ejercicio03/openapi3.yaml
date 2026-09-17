@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: API de Reservas de Hotel
+  version: 1.0.0
+  description: API RESTful para la gestión de reservas hoteleras.
+paths:
+  /reservas:
+    post:
+      summary: Crear una reserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reserva'
+      responses:
+        '201':
+          description: Reserva creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+    get:
+      summary: Consultar todas las reservas
+      responses:
+        '200':
+          description: Lista de reservas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reserva'
+  /reservas/{id}:
+    get:
+      summary: Consultar reserva por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reserva encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserva'
+        '404':
+          description: Reserva no encontrada
+    put:
+      summary: Actualizar una reserva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reserva'
+      responses:
+        '200':
+          description: Reserva actualizada
+        '404':
+          description: Reserva no encontrada
+  /reservas/{id}/cancelar:
+    patch:
+      summary: Cancelar una reserva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reserva cancelada exitosamente
+        '404':
+          description: Reserva no encontrada
+components:
+  schemas:
+    Reserva:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        nombreCliente:
+          type: string
+          example: "María López"
+        habitacion:
+          type: string
+          example: "302A"
+        fechaEntrada:
+          type: string
+          format: date
+          example: "2026-10-01"
+        fechaSalida:
+          type: string
+          format: date
+          example: "2026-10-05"
+        estado:
+          type: string
+          example: "CONFIRMADA"
